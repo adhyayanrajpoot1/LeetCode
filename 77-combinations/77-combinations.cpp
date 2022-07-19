@@ -8,7 +8,7 @@ public:
             return;
         }
         if(i>n)return ;
-        
+        if(k>n-i+1)return;
         //pick 
         subset.push_back(i);
         f(n,k-1,i+1,subset,ans);
