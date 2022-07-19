@@ -4,13 +4,19 @@ public:
     void f(int ind , int target , vector<int>&can,vector<vector<int>>&ans)
     {
         
-        if(ind==can.size())
-        {
-            if(target==0){
-                ans.push_back(v);
-            }
+        // if(ind==can.size())
+        // {
+        //     if(target==0){
+        //         ans.push_back(v);
+        //     }
+        //     return;
+        // }
+        if(target==0){
+            ans.push_back(v);
             return;
         }
+        //if(target<0)return;
+        if(ind>=can.size())return;
         if(can[ind]<=target)
         {
             v.push_back(can[ind]);
