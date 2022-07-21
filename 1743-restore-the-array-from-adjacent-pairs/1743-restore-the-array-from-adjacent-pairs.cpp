@@ -1,9 +1,7 @@
 class Solution {
 public:
-    unordered_map<int,vector<int>>mapp;
-    set<int>v;
-    vector<int>ans;
-    void dfs(int ele)
+    
+    void dfs(int ele,set<int>&v ,vector<int>&ans , unordered_map<int,vector<int>>&mapp)
     {
         // if(v.find(ele)!=v.end())return;
         ans.push_back(ele);
@@ -11,13 +9,15 @@ public:
         for(auto it : mapp[ele])
         {
             if(v.find(it)==v.end())
-                dfs(it);
+                dfs(it,v,ans,mapp);
         }
     }
     vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
         int n = adjacentPairs.size();
-        
-        for(auto it: adjacentPairs)
+        unordered_map<int,vector<int>>mapp;
+        set<int>v;
+        vector<int>ans;
+        for(auto &it: adjacentPairs)
         {
             mapp[it[0]].push_back(it[1]);
             mapp[it[1]].push_back(it[0]);
@@ -31,7 +31,7 @@ public:
                 break;
             }
         }
-        dfs(head);
+        dfs(head,v,ans,mapp);
         return ans;
         
     }
