@@ -5,12 +5,13 @@ public:
     vector<int>ans;
     void dfs(int ele)
     {
-        if(v.find(ele)!=v.end())return;
+        // if(v.find(ele)!=v.end())return;
         ans.push_back(ele);
         v.insert(ele);
         for(auto it : mapp[ele])
         {
-           dfs(it);
+            if(v.find(it)==v.end())
+                dfs(it);
         }
     }
     vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
