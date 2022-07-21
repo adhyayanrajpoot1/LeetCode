@@ -1,26 +1,28 @@
+
 static int speedup = [](){
-    ios::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(0);
-    return 0;
+     ios::sync_with_stdio(false);
+     cin.tie(NULL);
+     cout.tie(0);
+     return 0;
 }();
 
 class Solution {
 public:
     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-        int n = gas.size();
-        int i, j;
-        for (i = 0; i < n; i += j){
-            int sum = 0;
-            for (j = 1; j <= n; j++){
-                int k = (i + j - 1) % n;
-                sum += (gas[k] - cost[k]);
-                if (sum < 0)
-                    break;
+        int total = 0;
+        int startp = 0;
+        int cap = 0;
+        
+        for(int i = 0; i < gas.size(); i++){
+            cap += gas[i] - cost[i];
+            if(cap < 0){
+                cap = 0;
+                startp = i + 1;
             }
-            if (j > n)
-                return i;
+            
+            total += gas[i] - cost[i];
         }
-        return -1;
-    }
+        
+        return total < 0 ? -1 : startp;
+        }
 };
