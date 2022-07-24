@@ -30,7 +30,7 @@ public:
             if (target >= matrix[id][0] && target <= matrix[id][n - 1])   {
                 auto it = lower_bound(matrix[id].begin(), matrix[id].end(), target);
                 if (*it == target)  return true;
-                pivot = it - matrix[id].begin() - 1;
+                //pivot = it - matrix[id].begin() - 1;
             }
             id++;
         }
