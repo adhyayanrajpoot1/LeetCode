@@ -1,30 +1,18 @@
 class Solution {
 public:
-    int solve(int i , vector<int>& nums,vector<int>&dp)
+    int memo[101];
+    int f(int ind , vector<int>& nums)
     {
-        if(i==nums.size())return 0;
-        if(i==nums.size()-1)return nums[i];
-        if(dp[i]!=-1)return dp[i];
-       return dp[i] = max(solve(i+1,nums,dp),solve(i+2,nums,dp)+nums[i]);
+        if(ind==0)return nums[ind];
+        if(ind==1)return max(nums[ind-1],nums[ind]);
+        int &ans = memo[ind];
+        if(ans!=-1)return ans;
         
-        
-        
-        
-    }
-    int solve2(int i , vector<int>& nums , vector<int>&dp)
-    {
-        int n = nums.size();
-        dp[0] = nums[0];
-        
-        for(int i= 2 ; i <= n ; i++)
-        {
-            dp[i] = max(dp[i+1],dp[i+2]+nums[i]);
-        }
-        return dp[n];
-        
+        return ans = max(f(ind-2,nums)+nums[ind],f(ind-1,nums));
     }
     int rob(vector<int>& nums) {
-        vector<int>dp(nums.size(),-1);
-        return solve(0,nums,dp);
+        //if(nums.size()==1 || nums.size()==2)return nums[nums.size()-1];
+        memset(memo,-1,sizeof(memo));
+        return f(nums.size()-1,nums);
     }
 };
