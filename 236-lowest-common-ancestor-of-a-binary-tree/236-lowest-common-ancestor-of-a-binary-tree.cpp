@@ -45,6 +45,7 @@ public:
                 
                 
             }
+            else break;
             i++,j++;
             
         }
