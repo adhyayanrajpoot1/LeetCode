@@ -34,24 +34,25 @@ public:
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
         vector<TreeNode*>v1,v2;
         if(!f(root,p,v1) ||!f(root,q,v2))return NULL;
-//         TreeNode*common=NULL;
-//         int i =0,j=0;
-//         cout << v1.size() << " " << v2.size()<<endl;
-//         while(v1.size()>i && v2.size()>j)
-//         {
-//             cout << v1[i]->val <<v2[j]->val<<endl;
-//             if(v1[i]->val==v2[j]->val){
-//                 common = v1[i++];
-//                 j++;
+        TreeNode*common=NULL;
+        int i =0,j=0;
+        cout << v1.size() << " " << v2.size()<<endl;
+        while(v1.size()>i && v2.size()>j)
+        {
+            cout << v1[i]->val <<v2[j]->val<<endl;
+            if(v1[i]->val==v2[j]->val){
+                common = v1[i];
                 
-//             }
+                
+            }
+            i++,j++;
             
-//         }
-//         return common;
-         int i;
-    for (i = 0; i < v1.size() && i < v2.size() ; i++)
-        if (v1[i] != v2[i])
-            break;
-    return v1[i-1];
+        }
+        return common;
+    //      int i;
+    // for (i = 0; i < v1.size() && i < v2.size() ; i++)
+    //     if (v1[i] != v2[i])
+    //         break;
+    // return v1[i-1];
     }
 };
