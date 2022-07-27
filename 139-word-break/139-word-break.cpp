@@ -18,12 +18,36 @@ public:
     }
     bool wordBreak(string s, vector<string>& wordDict) {
         set<string>st;
-        memset(dp,-1,sizeof dp);
+        memset(dp,0,sizeof dp);
         for(auto it : wordDict)
         {
             st.insert(it);
         }
-        return f(0,s,st);
+        // return f(0,s,st);
+        int n = s.size();
+        dp[n]=1;
+        for(int i = n-1 ; i>=0 ; i--)
+        {
+            string temp="";
+            for(int j = i ; j < n ; j++)
+            {
+                temp+=s[j];
+                if(st.find(temp)!=st.end())
+                {
+                    cout << temp << " ";
+                    if(!dp[i])
+                    dp[i] = dp[j+1];   
+                    //break;
+                }
+                //else dp[i] = 0;   
+            }    
+        }
+        cout << st.count("a")<<endl;
+        for(int i = 0 ; i <= s.size() ; i++)
+        {
+            cout << dp[i] << " ";
+        }
+        return dp[0];
         
     }
     
