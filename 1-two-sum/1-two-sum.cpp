@@ -1,18 +1,17 @@
 class Solution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
-        unordered_map<int,int> hashtable;
-        vector<int>v;
-        for(int i=0;i<nums.size();i++)
+        vector<int>ans;
+        unordered_map<int,int>mapp;
+        int n=nums.size();
+        for(int i = 0 ; i < n ; i++)
         {
-            if(hashtable.find(target-nums[i])!=hashtable.end()){
-                v.push_back(i);
-                v.push_back(hashtable[target-nums[i]]);
-            }
-            else{
-                hashtable[nums[i]]=i;
-            }
-        }
-        return v;
+            if(mapp.find(target-nums[i])!=mapp.end())
+            {
+                ans.push_back(mapp[target-nums[i]]);
+                ans.push_back(i);
+                return ans;
+            }mapp[nums[i]]=i;
+        }return ans;
     }
 };
