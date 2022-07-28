@@ -27,15 +27,6 @@ public:
         this->original = image[sr][sc];
         if(original==color)return image;
         flood_fill(sr,sc,image,color);
-        
-        
-//         for(int i = sr ; i < n ; i++)
-//         {
-//             for(int j = sc ; j < m ; j++)
-//             {
-//                 if()
-//             }
-//         }
         return image;
     }
 };
