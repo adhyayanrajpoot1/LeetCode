@@ -2,13 +2,14 @@ class Solution {
 public:
 vector<int> findAnagrams(string s, string p) {
 unordered_map<char, int> mp;
-
+int count ;
 //storing the occ. of string p in the map
 for (auto &x : p){
+    if(mp.find(x)==mp.end())count++;
     mp[x]++;
 }
 vector<int>ans;
-int count = mp.size();
+
 int k = p.size();
 int i=0, j=0;
 
