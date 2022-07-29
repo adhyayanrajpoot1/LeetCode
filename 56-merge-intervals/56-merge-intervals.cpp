@@ -1,21 +1,40 @@
 class Solution {
 public:
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end());
+    vector<vector<int>> merge(vector<vector<int>>& nums) {
+        sort(nums.begin(),nums.end());
         vector<vector<int>>ans;
-        vector<int>small = intervals[0];
-        for(auto it : intervals)
+        int n = nums.size();
+        for(int i = 0 ; i < n ; i++)
         {
-            if(small[1]>=it[0])
+            int s1= nums[i][0];
+            int e1 = nums[i][1];
+            int count=0;
+            for(int j = i; j < n ; j++)
             {
-                small[1] = max(small[1],it[1]);
+                  //fully oveerlap
+                if(i==j)continue;
+                if(nums[j][1]<=e1 && nums[j][0]>=s1)
+                {
+                    e1=e1;
+                    count++;
+                }
+                //partial overlap
+                else if(nums[j][0]<=e1){
+                    e1= nums[j][1];
+                    count++;
+                }
+//                 else{
+                    
+//                     break;
+//                 }    
+                //no overlap
             }
-            else{
-                ans.push_back(small);
-                small = it;
-            }
+            
+            cout<<i<<" " <<count<<" "<<endl;
+            i+=count;
+            ans.push_back({s1,e1});
         }
-        ans.push_back(small);
         return ans;
+        
     }
 };
