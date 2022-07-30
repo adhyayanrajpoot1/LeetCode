@@ -1,24 +1,39 @@
+if(buy)  //if we are buying then next time we will sell else next time we will buy
+{        //-prices[i], because bought stock of prices[i], expend money
+return v[i][buy]=max(-prices[i]+find(prices,i+1,k,!buy,v),find(prices,i+1,k,buy,v));
+}
+else    //it's time to sell , now decrease k, we have done 1 transaction
+{       //+prices[i], because we now gain (i.e) sell our stock at rate of prices[i]
+return v[i][buy]=max( prices[i]+find(prices,i+1,k-1,!buy,v),find(prices,i+1,k,buy,v));
+}
+}
+int maxProfit(vector<int>& prices) {
+int n=prices.size();
+vector<vector<int>> v(n,vector<int> (2,-1));
+//passing here buy=1 because we will first buy then sell
+//we can do atmost k=1 transaction
+return find(prices,0,1,1,v);
+}
+};
+https://leetcode.com/problems/best-time-to-buy-and-sell-stock-ii/
+​
+You can do as many transactions as you like
+​
+class Solution {
+public:
+int find(int ind,vector<int> &v,bool buy,vector<vector<int>> &memo)
 {
-return memo[ind][buy][c]=max(-prices[ind]+find(prices,ind+1,!buy,c,k,memo),find(prices,ind+1,buy,c,k,memo));
+if(ind>=v.size()) return 0;
+if(memo[ind][buy]!=-1) return memo[ind][buy];
+if(buy) //if we are buying then next time we will sell else next time we will buy
+{      //-prices[i], because bought stock of prices[i], expend money, !buy because next time sell
+return memo[ind][buy]=max(-v[ind]+find(ind+1,v,!buy,memo),find(ind+1,v,buy,memo));
 }
-else  //now we can either sell prices[i] or we can skip it and try next to sell
-{
-return memo[ind][buy][c]=max(prices[ind]+find(prices,ind+1,!buy,c+1,k,memo),find(prices,ind+1,buy,c,k,memo));
+else   //it's time to sell
+{      //+prices[i], because we now gain (i.e) sell our stock at rate of prices[i]
+return memo[ind][buy]=max(v[ind]+find(ind+1,v,!buy,memo),find(ind+1,v,buy,memo));
 }
 }
-int maxProfit(int k, vector<int>& prices) {
-//edge case we are not able to pick 2k points from n points, which means
-//we will not reach the limit no matter how we try.
-//if the price of day i arise, buy the stock in i-1th day and sell it at ith day.
-if (2 * k > prices.size()) {
-int res = 0;
-for (int i = 1; i < prices.size(); i++) {
-res += max(0, prices[i] - prices[i - 1]);
-}
-return res;
-}
-//here we can do maximum k transaction
-vector<vector<vector<int>>> memo(prices.size()+1,vector<vector<int>>(2,vector<int>(k+1,-1)));
-return find(prices,0,1,0,k,memo);
-}
-};[https://leetcode.com/problems/best-time-to-buy-and-sell-stock/discuss/900050/Fully-explained-all-buy-and-sell-problems-C%2B%2B-oror-Recursive-oror-Memoization-oror-Minor-difference](http://)
+int maxProfit(vector<int>& prices) {
+int n=prices.size();
+if(n<2) return 0;
