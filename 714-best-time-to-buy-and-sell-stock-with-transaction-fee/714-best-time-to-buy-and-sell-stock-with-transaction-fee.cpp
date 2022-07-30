@@ -16,6 +16,18 @@ public:
     }
     int maxProfit(vector<int>& prices, int fee) {
         memset(dp,-1,sizeof dp);
-        return f(0,fee,1,prices);
+        int n = prices.size();
+        // return f(0,fee,1,prices);
+        int cash = 0;
+        int hold = -prices[0];
+        for(int i = 1 ; i < n ; i++)
+        {
+            cash = max(cash,hold+prices[i]-fee);
+            hold = max(hold , cash-prices[i]);
+        }
+        return cash;
+        
+        
+        
     }
 };
