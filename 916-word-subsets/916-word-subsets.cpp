@@ -1,6 +1,12 @@
 class Solution {
 public:
-       vector<string> wordSubsets(vector<string>& A, vector<string>& B) {
+    
+    vector<int> counter(string& word) {
+        vector<int> count(26);
+        for (char c : word) count[c - 'a']++;
+        return count;
+    }
+    vector<string> wordSubsets(vector<string>& A, vector<string>& B) {
         vector<int> count(26), tmp(26);
         int i;
         for (string b : B) {
@@ -17,11 +23,5 @@ public:
             if (i == 26) res.push_back(a);
         }
         return res;
-    }
-
-    vector<int> counter(string& word) {
-        vector<int> count(26);
-        for (char c : word) count[c - 'a']++;
-        return count;
     }
 };
