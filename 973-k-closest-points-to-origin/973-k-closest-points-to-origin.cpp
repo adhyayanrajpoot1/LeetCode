@@ -4,18 +4,17 @@ class Node{
     int x;
     int y;
 };
- 
-class Solution {
-public:
-   struct cmp
-    {
-        bool operator()(Node a , Node b)
+  bool operator <(Node a ,Node b)
         {
             return a.diff > b.diff;
         }
-    };
+class Solution {
+public:
+   
+       
+   
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
-        priority_queue<Node,vector<Node>,cmp>pq;
+        priority_queue<Node>pq;
         for(auto it : points)
         {
             int a = it[0];
