@@ -1,10 +1,23 @@
 class MyCalendar {
-    vector<pair<int, int>> books;
-public:    
+public:
+    // bool *arr = new bool[1e9+5]();
+    map<int,int>mp;
+    MyCalendar() {
+        
+    }
+    
     bool book(int start, int end) {
-        for (pair<int, int> p : books)
-            if (max(p.first, start) < min(end, p.second)) return false;
-        books.push_back({start, end});
+        mp[start]++;
+        mp[end]--;
+        int sum=0;
+        for(auto it : mp){
+            sum+=it.second;
+            if(sum>1){
+                mp[start]--;
+                mp[end]++;
+                return false;
+            }
+        }
         return true;
     }
 };
