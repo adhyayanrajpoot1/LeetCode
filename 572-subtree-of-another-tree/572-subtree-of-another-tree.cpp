@@ -14,7 +14,7 @@ public:
     bool isSubtree(TreeNode* s, TreeNode* t) {
         
         if(!s) return false;
-        if (isSame(s,t)) return true;
+        if (s->val==t->val && isSame(s,t)) return true;
         
         return isSubtree(s->left,t) || isSubtree(s->right,t);
         
