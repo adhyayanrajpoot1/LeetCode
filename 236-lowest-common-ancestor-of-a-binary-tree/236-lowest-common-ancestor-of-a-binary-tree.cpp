@@ -9,13 +9,7 @@
  */
 class Solution {
 public:
-//     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-//     if (!root || root == p || root == q) return root;
-//     TreeNode* left = lowestCommonAncestor(root->left, p, q);
-//     TreeNode* right = lowestCommonAncestor(root->right, p, q);
-//     return left==NULL ? right : right==NULL ? left : root;
-// }
-   bool f(TreeNode*root , TreeNode*temp,vector<TreeNode*>&ans)
+     bool f(vector<TreeNode*>&ans , TreeNode*root , TreeNode*temp)
     {
         if(root==NULL)return false;
         ans.push_back(root);
@@ -25,35 +19,33 @@ public:
             return true;
         }
         
-        if((root->left && f(root->left,temp,ans))||(root->right && f(root->right , temp,ans))) return true;
+        if((f(ans,root->left,temp))||(f(ans,root->right , temp))) return true;
         
         
         ans.pop_back();
         return false;
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        vector<TreeNode*>v1,v2;
-        if(!f(root,p,v1) ||!f(root,q,v2))return NULL;
-        TreeNode*common=NULL;
-        int i =0,j=0;
-        cout << v1.size() << " " << v2.size()<<endl;
-        while(v1.size()>i && v2.size()>j)
-        {
-            cout << v1[i]->val <<v2[j]->val<<endl;
-            if(v1[i]->val==v2[j]->val){
-                common = v1[i];
+        vector<TreeNode*>arr1,arr2;
+        f(arr1 , root , p);
+        f(arr2 , root , q);
+        for(int i = 0 ; i < arr1.size() ; i++)cout << arr1[i]->val << " ";
+        cout<<endl;
+        for(int i = 0 ; i < arr2.size() ; i++)cout << arr2[i]->val << " ";
+        cout<<endl;
+        int i = 0 , j = 0;
+        TreeNode*ans=NULL;
+        while(i < arr1.size() && j < arr2.size()){
+            if(arr1[i]==arr2[j]){
+                cout << arr1[i]->val<<" ";
+                ans = arr1[i];
                 
                 
             }
-            else break;
             i++,j++;
-            
+            //else break;
         }
-        return common;
-    //      int i;
-    // for (i = 0; i < v1.size() && i < v2.size() ; i++)
-    //     if (v1[i] != v2[i])
-    //         break;
-    // return v1[i-1];
+        return ans;
+        
     }
 };
