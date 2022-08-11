@@ -14,11 +14,13 @@ public:
     bool f(TreeNode*root , TreeNode*min , TreeNode*max)
     {
         if(root==NULL)return true;
-        if((min==NULL || root->val > min->val) && (max==NULL ||root->val < max->val))
-            return f(root->left , min,root)&& f(root->right,root,max);
+        if((min==NULL || root->val >min->val) && (max==NULL || root->val<max->val))
+        {
+            return f(root->right , root , max) && f(root->left , min , root);
+        }
         return false;
     }
     bool isValidBST(TreeNode* root) {
-        return f(root,NULL,NULL);
+        return f(root , NULL , NULL);
     }
 };
