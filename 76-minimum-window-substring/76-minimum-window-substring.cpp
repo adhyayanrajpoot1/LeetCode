@@ -24,10 +24,10 @@ public:
 
             //window hit
             if(count==0){
-                if(mn>j-i+1){
-                    mn=j-i+1;
-                    res=s.substr(i,mn);
-                    }
+                // if(mn>j-i+1){
+                //     mn=j-i+1;
+                //     res=s.substr(i,mn);
+                //     }
                 
                 while(i<=j && count==0){
                     if(umap.find(s[i])!=umap.end()){
