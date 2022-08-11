@@ -5,7 +5,7 @@ public:
             return "";
         
         unordered_map<char,int>umap;
-        int i=0,j=0,mn=INT_MAX,count=0;
+        int i=0,j=0,mn=s.size()+1,count=0;
         string res="";
         
         for(int i=0;i<t.length();i++)
