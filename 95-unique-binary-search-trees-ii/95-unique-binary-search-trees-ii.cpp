@@ -11,34 +11,32 @@
  */
 class Solution {
 public:
-   vector<TreeNode *> generateTree(int from, int to)
-    {
-        vector<TreeNode *> ret;
-        if(to - from < 0) ret.push_back(0);
-        if(to - from == 0) ret.push_back(new TreeNode(from));
-        if(to - from > 0)
+    vector<TreeNode*> helper(int s , int e) {
+        if(s>e){
+            vector<TreeNode*>ans;
+            ans.push_back(NULL);
+            return ans;
+        }
+        vector<TreeNode*>ans;
+        for(int i = s ; i <= e ; i++)
         {
-            for(int i=from; i<=to; i++)
+            vector<TreeNode*>l = helper(s,i-1);
+            vector<TreeNode*>r = helper(i+1,e);
+            for(auto a : l )
             {
-                vector<TreeNode *> l = generateTree(from, i-1);
-                vector<TreeNode *> r = generateTree(i+1, to);
-
-                for(int j=0; j<l.size(); j++)
+                for(auto b : r)
                 {
-                    for(int k=0; k<r.size(); k++)
-                    {
-                        TreeNode * h = new TreeNode (i);
-                        h->left = l[j];
-                        h->right = r[k];
-                        ret.push_back(h);
-                    }
+                    TreeNode*root = new TreeNode(i);
+                    root->left = a;
+                    root->right = b;
+                    ans.push_back(root);
                 }
             }
         }
-        return ret;
+        return ans;
+        
     }
-
-    vector<TreeNode *> generateTrees(int n) {
-        return generateTree(1, n);
+    vector<TreeNode*> generateTrees(int n) {
+        return helper(1,n);
     }
 };
