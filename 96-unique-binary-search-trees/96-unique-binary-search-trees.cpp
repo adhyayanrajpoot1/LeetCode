@@ -1,18 +1,18 @@
 class Solution {
 public:
     int numTrees(int n) {
-        vector<int>dp(n+1,0);
+        int*dp = new int[n+1]();
         dp[0] = 1;
-        dp[1]=1;
+        dp[1] = 1;
+        if(n==0 || n==1)return n;
+        //dp[2] = 2;
+        //dp[3] = 5;
+        
         for(int i = 2 ; i <= n ; i++)
         {
-            int l = 0;
-            int r = i-1;
-            while(l<=i-1)
+            for(int j = 0 ; j < i ; j++)
             {
-                dp[i]+=dp[l]*dp[r];
-                l++;
-                r--;
+                dp[i] += dp[j]*dp[i-j-1];
             }
         }
         return dp[n];
