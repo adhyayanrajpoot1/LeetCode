@@ -3,7 +3,7 @@ public:
     void dfs(vector<vector<char>>& grid,int i,int j ){
        
         
-        grid[i][j] = '2';
+        grid[i][j] = '0';
         int d[] = {0,-1,0,1,0};
         int n = grid.size();
         int m = grid[0].size();
