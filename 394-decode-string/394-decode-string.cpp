@@ -45,23 +45,3 @@ public:
         return ans;
     }
 };
-
-
-/*
-Logic
-
-First make a char stack.
-Traverse the string.
-If the char is not a ] 
-    push it into the stack.
-Else 
-    store all elements of the stack in a string in reverse fashion until we encounter a [.
-    pop the top element of stack as it it [.
-    After that create a number string and store the frequency in reverse fashion. We use while here and not if because we can also have 2 digit or 3 digit number as frequency. Keep popping from stack.
-    Then convert that number string into int k.
-    now use a while loop until k>0 and store each char of string k number of times.
-    
-Now traverse through the stack and store all the characters in reverse order until stack becomes empty.
-Finally, return ans.
-
-*/
