@@ -1,19 +1,22 @@
-
 class Solution {
 public:
+    //dp
     int nthUglyNumber(int n) {
-        if(n <= 0) return false; // get rid of corner cases 
-        if(n == 1) return true; // base case
-        int t2 = 0, t3 = 0, t5 = 0; //pointers for 2, 3, 5
-        vector<int> k(n);
-        k[0] = 1;
-        for(int i  = 1; i < n ; i ++)
+        int p1 = 0;
+        int p2 = 0;
+        int p3 = 0;
+        vector<int>ans(n);
+        ans[0] =1;
+        for(int i = 1 ; i < n ; i++)
         {
-            k[i] = min(k[t2]*2,min(k[t3]*3,k[t5]*5));
-            if(k[i] == k[t2]*2) t2++; 
-            if(k[i] == k[t3]*3) t3++;
-            if(k[i] == k[t5]*5) t5++;
+            int m2 = 2*ans[p1];
+            int m3 = 3*ans[p2];
+            int m5 = 5*ans[p3];
+            ans[i] = min(m2 , min(m3,m5));
+            if(ans[i]==m2)p1++;
+            if(ans[i]==m3)p2++;
+            if(ans[i]==m5)p3++;
         }
-        return k[n-1];
+        return ans[n-1];
     }
 };
