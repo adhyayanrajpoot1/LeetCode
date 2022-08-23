@@ -1,64 +1,55 @@
-
 class Solution {
 public:
-    int canCompleteCircuit(vector<int>& gas, vector<int>& cost) 
-    {
-        // first of all we need to check whether we've sfficient fuel or not. 
-        int total_cost=0,total_fuel=0,n=cost.size();
-        for(int i=0;i<n;i++)
+    
+    
+     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
+        int n = gas.size();
+        if(accumulate(gas.begin() , gas.end() , 0) < accumulate(cost.begin() , cost.end() , 0))return -1;
+        int r = 0;
+        int ans= 0;
+        for(int i = 0 ; i < n ; i++)
         {
-            total_cost+=cost[i];
-            total_fuel+=gas[i];
-        }
-        // If the total fuel is lesser than the cost then definitely we can't cover the whole cicular tour.
-        if(total_fuel<total_cost)
-        {
-            return -1;
-        }
-        
-        
-        // If the total fuel is sufficient enough to cover the circular tour then definitely an answer exists
-        int curr_fuel=0,start=0;  // start with zero fuel.
-        for(int i=0;i<n;i++)
-        {
-            // If at any point our balance/ current fuel is negative that means we can't come to the i'th petrol pump from the previous pump beacuse our fuel won't allow us to cover such distance. 
-            //So we'll make the i'th pump as the start point ans proceed. Simultaneously we'll make the current fuel to be 0 as we're starting freshly.
-            if(curr_fuel<0)
-            {
-                start=i;
-                curr_fuel=0;
+            r +=gas[i]-cost[i];
+            if(r<0){
+                ans = i+1;
+                r = 0;
             }
-            // at any station we'll fill petrol and pay the cost to go to the next station . so current fuel would be the following.
-            curr_fuel+=(gas[i]-cost[i]);
         }
-        return start;
+         return ans;
     }
-};
-
-// static int speedup = [](){
-//      ios::sync_with_stdio(false);
-//      cin.tie(NULL);
-//      cout.tie(0);
-//      return 0;
-// }();
-
-// class Solution {
-// public:
-//     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
-//         int total = 0;
-//         int startp = 0;
-//         int cap = 0;
-        
-//         for(int i = 0; i < gas.size(); i++){
-//             cap += gas[i] - cost[i];
-//             if(cap < 0){
-//                 cap = 0;
-//                 startp = i + 1;
-//             }
+    
+    
+    
+//     bool check(vector<int>&gas , vector<int>&cost , int ind)
+//     {
+//         int fuel = gas[ind]-cost[ind];
+//         for(int j = ind+1 ; j < gas.size() ; j++)
+//         {
+//             if(fuel<=0)return false;
+//             fuel = fuel + gas[j] - cost[j];
+//             cout << fuel << " ";
             
-//             total += gas[i] - cost[i];
+            
 //         }
+//         for(int j = 0 ; j < ind ; j++)
+//         {
+//             if(fuel<=0)return false;
+//             fuel = fuel + gas[j] - cost[j];
+//             cout << fuel << " ";
+            
+//         }
+//         if(fuel<0)return false;
+//         return true;
+//     }
+//     int canCompleteCircuit(vector<int>& gas, vector<int>& cost) {
         
-//         return total < 0 ? -1 : startp;
+//         for(int i = 0 ; i < gas.size() ; i++)
+//         {
+//             if(cost[i] > gas[i])continue;
+//             else{
+//                 if(check(gas,cost,i))return i;
+//             }
 //         }
-// };
+//         return -1;
+//     }
+};
