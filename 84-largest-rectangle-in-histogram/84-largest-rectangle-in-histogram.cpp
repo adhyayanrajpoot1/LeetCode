@@ -65,13 +65,6 @@ public:
         findNSright(arr);
         findNSleft(arr);
         int n = arr.size();
-        // for(auto it : a)
-        // {
-        //     cout << it <<" ";
-        // }cout<<endl;
-        // for(auto it : b){
-        //     cout<<it <<" ";
-        // }
         int width[n];
         
         int maxi = 0;
@@ -80,24 +73,7 @@ public:
             width[i]=abs(a[i]-b[i]-1);
             maxi = max(maxi,width[i]*arr[i]);
         }
-        
-        
-        
-        
-        return maxi;
-        
-        // int ans = 0;
-        // for(int i = 0 ; i < n ; i++)
-        // {
-        //     int ele = arr[i];
-        //     for(int j = i ; j < n ; j++)
-        //     {
-        //         ele = min(ele,arr[j]);
-        //         ans= max(ans,ele*(abs(j-i)+1));
-        //     }
-        // }
-        // return ans;
-        
+        return maxi; 
         
     }
 };
