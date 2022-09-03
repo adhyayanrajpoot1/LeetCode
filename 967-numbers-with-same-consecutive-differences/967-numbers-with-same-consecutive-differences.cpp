@@ -8,7 +8,7 @@ public:
                 int y = x % 10;
                 if (y + K < 10)
                     cur2.push_back(x * 10 + y + K);
-                if (K > 0 && y - K >= 0)
+                if ( K > 0 &&y - K >= 0)
                     cur2.push_back(x * 10 + y - K);
             }
             cur = cur2;
