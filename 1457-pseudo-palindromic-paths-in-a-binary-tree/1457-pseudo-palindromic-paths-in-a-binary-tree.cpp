@@ -1,54 +1,89 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
 class Solution {
 public:
-      int pseudoPalindromicPaths(TreeNode* root, int count = 0) {
-        if (!root) return 0;
-        count ^= 1 << (root->val - 1);
-        int res = pseudoPalindromicPaths(root->left, count) + pseudoPalindromicPaths(root->right, count);
-        if (root->left == root->right && (count & (count - 1)) == 0) res++;
+    void rec(TreeNode* root) {
+        if (!root)
+            return;
+        
+        m[root->val]++;
+        
+        // If we got to a leaf - check if the path can be a polindrome
+        if (!root->left && !root->right) {
+            int odd = 0;
+            for (auto a : m)
+                if (a.second % 2 == 1)
+                    odd++;
+
+            if (odd <= 1)
+                res++;
+        }
+        
+        rec(root->left);
+        rec(root->right);
+        m[root->val]--;
+    }
+    
+    int pseudoPalindromicPaths (TreeNode* root) {
+        rec(root);
         return res;
     }
+    
+private:
+    int res = 0;
+    unordered_map<int, int> m;
+};
+
+
+
+// /**
+//  * Definition for a binary tree node.
+//  * struct TreeNode {
+//  *     int val;
+//  *     TreeNode *left;
+//  *     TreeNode *right;
+//  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+//  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+//  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+//  * };
+//  */
+// class Solution {
+// public:
+//     //   int pseudoPalindromicPaths(TreeNode* root, int count = 0) {
+//     //     if (!root) return 0;
+//     //     count ^= 1 << (root->val - 1);
+//     //     int res = pseudoPalindromicPaths(root->left, count) + pseudoPalindromicPaths(root->right, count);
+//     //     if (root->left == root->right && (count & (count - 1)) == 0) res++;
+//     //     return res;
+//     // }
 //     int count=0;
-//     void dfs(TreeNode*root,vector<int>&v)
+//     void dfs(TreeNode*root,unordered_map<int,int>v)
 //     {
 //         if(root==NULL)return;
-        
+//         v[root->val]++;
 //         if(root->left==NULL && root->right==NULL)
 //         {
-//             bool odd = false;
-//             for(int i = 1 ; i < 10 ; i++)
+//             int odd = 0;
+//             for(auto it : v)
 //             {
                 
-//                 if(v[i]%2==1 && v[i]==1){
-//                     if(odd)return;
-//                     else
-//                     {
-//                         odd = true;
-//                     }
+//                 if(it.second%2==1){
+//                     odd++;
 //                 }
 //             }
-//             if(odd)count++;
+//             if(odd<=1)count++;
+//             return;
 //         }
-//         v[root->left->val]++;
 //         dfs(root->left,v);
-//         v[root->right->val]++;
 //         dfs(root->right,v);
-//         v[root->left->val]--;
-//         v[root->right->val]--;
+        
+//         v[root->val]--;
+        
+        
 //     }
 //     int pseudoPalindromicPaths (TreeNode* root) {
-//         vector<int>v(10,0);
+//         //vector<int>v(10,0);
+//         unordered_map<int,int>v;
 //         dfs(root,v);
 //         return count;
 //     }
-};
+// };
