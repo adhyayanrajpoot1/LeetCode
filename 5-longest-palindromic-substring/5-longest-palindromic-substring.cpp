@@ -1,46 +1,73 @@
 class Solution {
 public:
-    string longestPalindrome(string s) {
-        int start=0;
-        int end=0;
-        int n=s.size();
-        for(int i=1;i<n;i++)
+    bool pal(string &str)
+    {
+        int l = 0;
+        int r = str.size()-1;
+        while(l<=r)
         {
-		
-		    // for even length palindroms
-            int l=i-1;           
-            int h=i;
-            while(l>=0 && h<n && s[l]==s[h])   //if both left and right is same then expand the length by of pallindrom by moving l and h accordingly
+            if(str[l]!=str[r])return false;
+            l++;
+            r--;
+        }
+        return true;
+    }
+    string longestPalindrome(string s) {
+        string str;
+        int maxi = 0;
+        int n = s.size();
+        vector<vector<int>>v(s.size() , vector<int>(s.size(),0));
+        for(int diff = 0 ; diff < s.size() ; diff++)
+        {
+            for(int i = 0 , j = i+diff ; j<n && i<n ; i++,j++)
             {
-                if(end-start < h-l )           // if current length of pallindrom is greater than previous the update start and end accordingly
+                if(i==j)
                 {
-                    start=l;
-                    end=h;
+                    v[i][j] = 1;
                 }
-                l--;
-                h++;
-            }
-            
-			//for odd length palindroms
-            l=i-1;
-            h=i+1;
-            while(l>=0 && h<n && s[l]==s[h])
-            {
-                if(end-start < h-l )
+                else if(diff==1)
                 {
-                    start=l;
-                    end=h;
+                    v[i][j] = (s[i]==s[j])?2:0;
                 }
-                l--;
-                h++;
+                else 
+                {
+                    if(s[i]==s[j] && v[i+1][j-1])
+                        v[i][j] = v[i+1][j-1]+2;
+                }
+                
+                if(v[i][j])
+                {
+                    if(j-i+1>maxi)
+                    {
+                        maxi = j-i+1;
+                        str = s.substr(i,maxi);
+                    }
+                }
             }
         }
+        return str;
         
-        string ans="";
-        for(int i=start;i<=end;i++)
-            ans+=s[i];
         
-        return ans;
+        
+        
+        // int maxi = 0;
+        // string ans;
+        // for(int i = 0; i < s.length() ; i++)
+        // {
+        //     for(int j = i ; j < s.length() ; j++)
+        //     {
+        //         string x = s.substr(i,j-i+1);
+        //         if(pal(x))
+        //         {
+        //             if(j-i+1>maxi)
+        //             {
+        //                 maxi = j-i+1;
+        //                 ans = s.substr(i,j-i+1);
+        //             }
+        //            // maxi = max(maxi,j-i+1);
+        //         }
+        //     }
+        // }
+        // return ans;
     }
-    
 };
