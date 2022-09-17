@@ -1,75 +1,222 @@
+static const auto fastIO = []() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+    return 0;
+}();
+
 class Solution {
 public:
-    // kind of like a dp map, which stores if the calculated string is a dp or not
-    unordered_map<string, bool> check;
-    // function to check is string is palindrome
-    bool palin(string &s)
-    {
-        if(check.find(s) != check.end())
-            return check[s];
-        
-        if(s.length() == 0){
-            check[s] = true;
-            return true;
-        }
-        int n = s.length();
-        for(int i = 0; i <= n/2; i++)
-        {
-            if(s[i] != s[(n - i) - 1])
-            {
-                check[s] = false;
-                return false;
-            }
-        }
-        check[s] = true;
-        return true;    
-    }
-    
     vector<vector<int>> palindromePairs(vector<string>& words) {
         
-        unordered_map<string, int> mp;
-        vector<vector<int>> ans;
-        //storing the reverse of every string in unordered map
-        for(int i = 0 ; i < words.size(); i++)
-        {
-            string str = words[i];
-            reverse(str.begin(), str.end());
-            mp[str] = i;
-        }
-        // if any string is "" means palindrome strings and "" string will form a pair
-        if(mp.find("") != mp.end())
-        {
-            for(int i = 0; i < words.size(); i++)
-            {
-                if(i == mp[""])
+        /*
+        /// O(n^2) TLE
+        vector<vector<int>> res;
+        
+        for(int g=0;g<words.size();g++){
+            
+            for(int h=0;h<words.size();h++){
+                
+                if( g == h ) continue;
+                
+                if( words[g].empty() || words[h].empty() ){
+                    
+                    string* ptr = words[g].empty() ? &words[h] : &words[g];
+                    
+                    int i = 0, j = ptr->size()-1;
+                    bool match = true;
+                    while( i < j ){
+                        if( (*ptr)[i] != (*ptr)[j] ){
+                            match = false;
+                            break;
+                        }
+                        i++;
+                        j--;
+                    }
+                    if( match ){
+                        res.push_back( { g , h } );
+                    }
                     continue;
-                if(palin(words[i]))
-                {
-                    ans.push_back({i, mp[""]});
+                }
+                
+                // cout<<":::"<<g<<"."<<h<<endl;
+                // cout<<":::compare:"<<words[g]<<" with "<<words[h]<<endl;
+                
+                bool match = true;
+                string* s1 = &words[g], *s2 = &words[h];
+                int i = 0, j = s2->size()-1;
+                while( true ){
+                    
+                    // cout<<"compare:"<<s1<<"."<<s2<<" : "<<i<<" . "<<j<<endl;
+                    
+                    if( (*s1)[i] != (*s2)[j] ){
+                        match = false;
+                        break;
+                    }
+                    
+                    i++;
+                    j--;
+                    
+                    if( i == s1->size() ){
+                        i = 0;
+                        s1 = &words[h];
+                    }
+                    if( j < 0 ){
+                        s2 = &words[g];
+                        j = words[g].size()-1;
+                    }
+                    
+                    if( (s1 == s2 && i >= j) || (words[g].size() == words[h].size() && s1 == &words[h]) ){
+                        break;
+                    }
+                }
+                
+                if( match ){
+                    // cout<<"match"<<endl;
+                    res.push_back( { g , h } );
+                }
+            }
+            
+        }
+        return res;
+        */
+        
+        
+        /*
+        /// trie
+        class node{
+            public:
+            node** arr;
+            vector<int> idx;
+            int w_idx;
+            node(){
+                arr = new node*[ 26 ];
+                for(int t=0;t<26;t++) arr[t] = nullptr;
+                idx = {};
+                w_idx = -1;
+            }
+        };
+        
+        node* root = new node();
+                
+        auto check = [&](int w_idx,int from,int to) -> bool {
+            int i = from, j = to;
+            while( i < j ){
+                if( words[w_idx][i] != words[w_idx][j] ){
+                    return false;
+                }
+                i++;
+                j--;
+            }
+            return true;
+        };
+        
+        for(int g=0;g<words.size();g++){
+            node* curr = root;
+            for(int h=0;h<words[g].size();h++){
+                if( !curr->arr[ words[g][h]-'a' ] ){
+                    curr->arr[ words[g][h] - 'a' ] = new node();
+                }
+                curr = curr->arr[ words[g][h] - 'a' ];
+                
+                if( (h+1 <= words[g].size()-1) && check( g , h+1 , words[g].size()-1 ) ){
+                    // cout<<"at:"<<words[g].substr(0,h+1)<<" rem is pal:"<<words[g].substr(h+1)<<endl;
+                    curr->idx.push_back( g );
+                }
+            }
+            curr->idx.push_back( g );
+            curr->w_idx = g;
+        }
+        
+        vector<vector<int>> res;
+        for(int g=0;g<words.size();g++){
+            
+            if( (root->w_idx != -1) && (root->w_idx != g) && check( g , 0 , words[g].size()-1 ) ){
+                // cout<<"here"<<endl;
+                res.push_back( { root->w_idx , g } );
+                res.push_back( { g , root->w_idx } );
+            }
+            
+            node* curr = root;
+            
+            int h;
+            for(h=words[g].size()-1;h>=0;h--){
+                if( !curr->arr[ words[g][h]-'a' ] ) break;
+                curr = curr->arr[ words[g][h] - 'a' ];
+                if( curr->w_idx != -1 && h-1 >= 0 && check( g , 0 , h-1 ) ){
+                    // cout<<"we have for word:"<<words[g]<<" palindrom part:"<<words[g].substr(0,h)<<endl;
+                    // cout<<"here2"<<endl;
+                    res.push_back( { curr->w_idx , g } );
+                }
+            }
+            
+            if( h < 0 ){
+                for(int r=0;r<curr->idx.size();r++){
+                    if( curr->idx[r] != g )
+                        res.push_back( { curr->idx[r] , g } );
+                }
+            }
+            
+        }
+        return res;
+        */
+        
+        
+        //// third-sol
+        map<int,unordered_map<string,int>> memo;
+        for(int g=0;g<words.size();g++){
+            string str = string( words[g].rbegin() , words[g].rend() );
+            memo[ words[g].size() ][ str ] = g;
+        }
+        
+        auto check = [&](string& str,int i,int j) -> bool {
+            while( i < j ){
+                if( str[i] != str[j] ) break;
+                i++;
+                j--;
+            }
+            return i >= j;
+        };
+        
+        vector<vector<int>> res;
+        for(int g=0;g<words.size();g++){
+            
+            string& str = words[g];
+            
+            for(auto& p : memo){
+                if( p.first > str.size() ) break;
+                
+                if( p.first == str.size() ){
+                    
+                    if( p.second.count(str) && p.second[str] != g ){
+                        res.push_back( { g , p.second[str] } );
+                    }
+                    
+                    continue;
+                }
+                
+                if( check( str , 0 , words[g].size()-1 - p.first ) && p.second.count( words[g].substr(words[g].size()-p.first) ) ){
+                    // cout<<"first"<<endl;
+                    res.push_back( { p.second[ words[g].substr( words[g].size()-p.first ) ] , g } );
+                }
+                
+                if( check( str , words[g].size() - ( words[g].size() - p.first ) , words[g].size()-1 ) && p.second.count( words[g].substr( 0 , p.first ) ) ){
+                    // cout<<"second"<<endl;
+                    res.push_back( { g , p.second[ words[g].substr( 0 , p.first ) ] } );
                 }
             }
         }
-        // checking in the main vector
-        for(int i = 0 ; i < words.size(); i++)
-        {
-            // storing the ith word in right and left as ""
-            string right = words[i];
-            string left = "";
-            // we will delete letters from right and insert each letter, character by character in left and check if it is present in the map or not. If present, we check if it is not in the same index as i.
-            
-            // if all these conditions pass, then we can push the indexes in our answer vector
-            for(int j = 0 ; j < words[i].length(); j++)
-            {
-                left.push_back(words[i][j]);
-                right.erase(right.begin() + 0);
-                if(mp.find(left) != mp.end() and palin(right) and mp[left] != i)
-                    ans.push_back({i, mp[left]});
-                
-                if(mp.find(right) != mp.end() and palin(left) and mp[right] != i)
-                    ans.push_back({mp[right], i});
-            }
-        }
-        // return ans;
-        return ans;
+        return res;
+        
     }
 };
+
+/*
+
+["a","b","c","ab","ac","aa"]
+["abcd","dcba","lls","s","sssll"]
+["a",""]
+["a","b","c","ab","ac","aa"]
+["abcd","dcba","lls","s","sssll"]
+
+*/
