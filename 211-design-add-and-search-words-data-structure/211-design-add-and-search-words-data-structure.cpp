@@ -1,53 +1,52 @@
-class TrieNode {
+class TrieNode
+{
 public:
-    bool word;
+    bool is_leaf;
     TrieNode* children[26];
-    TrieNode() {
-        word = false;
-        memset(children, NULL, sizeof(children));
+    TrieNode()
+    {
+        is_leaf = false;
+        memset(children, 0, sizeof(children)); 
     }
 };
 
-class WordDictionary {
+class WordDictionary
+{
 public:
-    /** Initialize your data structure here. */
-    WordDictionary() {
-        
+    WordDictionary()
+    {
+        root = new TrieNode();
     }
-    
-    /** Adds a word into the data structure. */
-    void addWord(string word) {
-        TrieNode* node = root;
-        for (char c : word) {
-            if (!node -> children[c - 'a']) {
-                node -> children[c - 'a'] = new TrieNode();
-            }
-            node = node -> children[c - 'a'];
+    void addWord(string word)
+    {
+        TrieNode *node = root;
+        for (char c : word)
+        {
+            if (!node->children[c - 'a'])
+                node->children[c - 'a'] = new TrieNode();
+            node = node->children[c - 'a'];
         }
-        node -> word = true;
+        node->is_leaf = true;
     }
-    
-    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
-    bool search(string word) {
-        return search(word.c_str(), root);
+    bool search(string word)
+    {
+        return search(word, root, 0);
     }
+
 private:
-    TrieNode* root = new TrieNode();
-    
-    bool search(const char* word, TrieNode* node) {
-        for (int i = 0; word[i] && node; i++) {
-            if (word[i] != '.') {
-                node = node -> children[word[i] - 'a'];
-            } else {
-                TrieNode* tmp = node;
-                for (int j = 0; j < 26; j++) {
-                    node = tmp -> children[j];
-                    if (search(word + i + 1, node)) {
-                        return true;
-                    }
-                }
-            }
+    TrieNode *root; 
+
+    bool search(string word, TrieNode *node, int pos)
+    {
+        if(pos == word.size())
+            return node->is_leaf;
+        if (word[pos] != '.'){
+            node = node->children[word[pos] - 'a'];
+            return node && search(word, node, pos + 1);
         }
-        return node && node -> word;
+        for (int i = 0; i < 26; i++)
+            if(node->children[i] && search(word, node->children[i], pos + 1))
+                return true;
+        return false;        
     }
 };
