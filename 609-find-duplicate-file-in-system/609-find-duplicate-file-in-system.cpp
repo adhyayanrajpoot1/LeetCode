@@ -11,12 +11,12 @@ public:
 			auto it = s.find('(');
 			file = s.substr(0, it);
 			content = s.substr(it);
-			Files[content].emplace_back(dir + '/' + file);
+			Files[content].push_back(dir + '/' + file);
 		}
 	}
 	for(auto& content : Files) 
 		if(size(content.second) > 1) 
-			ans.push_back(move(content.second)); 
+			ans.push_back(content.second); 
 	return ans;
 }
 };
