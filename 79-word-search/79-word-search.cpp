@@ -1,28 +1,28 @@
 class Solution {
 public:
-    bool has(int i, int j ,int n,int m, vector<vector<char>>& board,string&word , int p)
+    vector<vector<int>>visited;
+    bool find(vector<vector<char>>& board, string &word,int i,int j,int pos)
     {
-        if(p==word.length())return true;
-        if(i<0 || j<0 || i==n || j==m || board[i][j]!=word[p])return false;
-        board[i][j]='#';
-        bool var1 = has(i,j+1,n,m,board,word,p+1);
-        bool var2 = has(i,j-1,n,m,board,word,p+1);
-        bool var3 = has(i+1,j,n,m,board,word,p+1);
-        bool var4 = has(i-1,j,n,m,board,word,p+1);
-        board[i][j]=word[p];
-        return var1||var2||var3||var4;
-
-
+        int n = board.size();
+        int m = board[0].size();
+        if(pos==word.length())return true;
+        if(i>=n || i<0 ||j>=m || j<0 || visited[i][j]==1 || board[i][j]!=word[pos])return false;
+        
+        visited[i][j] = 1;
+        bool ans =  find(board,word,i+1,j,pos+1)||find(board,word,i,j+1,pos+1)||find(board,word,i-1,j,pos+1)||find(board,word,i,j-1,pos+1);
+        visited[i][j] = 0;
+        
+        return ans;
     }
     bool exist(vector<vector<char>>& board, string word) {
         int n = board.size();
         int m = board[0].size();
+        visited.resize(n,vector<int>(m,0));
         for(int i = 0 ; i < n ; i++)
         {
-            for(int j = 0; j < m ;j++)
+            for(int j = 0 ; j < m ; j++)
             {
-                if(has(i,j,n,m,board,word,0))return true;
-                else continue;
+                if(find(board,word,i,j,0))return true;
             }
         }
         return false;
