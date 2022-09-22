@@ -15,6 +15,7 @@ public:
         return root ? sumEvenGrandparent(root->left, root->val, p)
                + sumEvenGrandparent(root->right, root->val, p)
                + (gp % 2 ? 0 : root->val)  : 0;
-    }   
+    }
+ 
     
 };
