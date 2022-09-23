@@ -16,7 +16,7 @@ public:
             return true;
         if (r->val <= min_left || r->val >= max_right)
             return false;
-        if (r->left==NULL&&  !r->right) {
+        if (r->left==NULL&&  r->right==NULL) {
             auto it = m.find(r->val);
             if (it != end(m) && r != it->second) {
                 r->left = it->second->left;
@@ -37,7 +37,10 @@ public:
         }
         for (auto &t : trees)
             if (cnt[t->val] == 1)
+            {
+                cout<<t->val<<" ";
                 return traverse(t, m) && m.size() == 1 ? t : nullptr;
+            }
         return nullptr;
     }
 };
