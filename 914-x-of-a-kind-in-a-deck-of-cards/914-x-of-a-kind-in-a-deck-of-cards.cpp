@@ -15,7 +15,7 @@ public:
         for(auto it : m)
         {
             maxi  = gcd(maxi , it.second);
-            //if(m[it]<2)return false;
+            if(it.second<2)return false;
         }
         return maxi>=2;
     }
