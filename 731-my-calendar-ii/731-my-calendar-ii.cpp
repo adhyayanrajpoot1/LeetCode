@@ -1,27 +1,56 @@
 class MyCalendarTwo {
 public:
-    map<int,int>m;
+    vector<pair<int,int>>events,doubleBooking;
     MyCalendarTwo() {
         
     }
     
     bool book(int start, int end) {
-        m[start]++;
-        m[end]--;
-        int sum =0;
-        for(auto &it : m)
+        for(auto &it : doubleBooking)
         {
-            sum+=it.second;
-            if(sum>=3)
+            if(start<it.second && end>it.first)return false;
+        }
+        for(auto &it : events)
+        {
+            if(start<it.second && end>it.first)
             {
-                m[start]--;
-                m[end]++;
-                return false;
+                doubleBooking.push_back({max(start,it.first),min(it.second,end)});
             }
         }
+        events.push_back({start,end});
         return true;
+        
     }
 };
+
+
+
+
+
+// class MyCalendarTwo {
+// public:
+//     map<int,int>m;
+//     MyCalendarTwo() {
+        
+//     }
+    
+//     bool book(int start, int end) {
+//         m[start]++;
+//         m[end]--;
+//         int sum =0;
+//         for(auto &it : m)
+//         {
+//             sum+=it.second;
+//             if(sum>=3)
+//             {
+//                 m[start]--;
+//                 m[end]++;
+//                 return false;
+//             }
+//         }
+//         return true;
+//     }
+// };
 
 /**
  * Your MyCalendarTwo object will be instantiated and called as such:
