@@ -31,8 +31,14 @@ public:
             vector<int>col;
             for(auto p : it.second)
             {
-                col.insert(col.end(),p.second.begin(),p.second.end());
+                //col.insert(col.begin(),p.second.begin(),p.second.end());
+                for(auto a : p.second)
+                {
+                    col.push_back(a) ;
+                }
             }
+                //cout<<endl;
+            
             ans.push_back(col);
         }
         return ans;
