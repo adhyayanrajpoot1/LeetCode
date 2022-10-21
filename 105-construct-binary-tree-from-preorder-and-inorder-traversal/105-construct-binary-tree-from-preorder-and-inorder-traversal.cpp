@@ -11,27 +11,26 @@
  */
 class Solution {
 public:
-    TreeNode*f(vector<int>& preorder,int&pi, vector<int>& inorder,int il ,int ir)
+    TreeNode* f(vector<int>&pre , vector<int>&in , int s , int e , int &index)
     {
-        if(il>ir)return NULL;
-        TreeNode* root=new TreeNode(preorder[pi]);
-        int index;
-        for(int i = il ; i <= ir ; i++)
+        if(s>e)return NULL;
+        int div = 0;
+        TreeNode*node = new TreeNode(pre[index]);
+        for(int i = s ; i <= e ; i++)
         {
-            if(inorder[i]==root->val)
+            if(in[i]==pre[index])
             {
-                index = i;
+                div = i;
                 break;
             }
         }
-        pi++;
-        root->left = f(preorder,pi,inorder,il,index-1);
-        root->right = f(preorder,pi,inorder,index+1,ir);
-         
-        return root;
+        index++;
+        node->left = f(pre,in,s,div-1,index);
+        node->right = f(pre,in,div+1,e,index);
+        return node;
     }
     TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        int pi=0;
-        return f(preorder,pi,inorder,0,inorder.size()-1);
+        int index = 0;
+        return f(preorder,inorder,0,inorder.size()-1 , index);
     }
 };
