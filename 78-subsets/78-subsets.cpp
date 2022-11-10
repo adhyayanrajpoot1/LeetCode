@@ -1,6 +1,6 @@
 class Solution {
 public:
-    void f(int ind , vector<int>ds , vector<vector<int>>&ans,vector<int>&nums)
+    void f(int ind , vector<int>&ds , vector<vector<int>>&ans,vector<int>&nums)
     {
         if(ind>nums.size())return;
         if(ind==nums.size())
