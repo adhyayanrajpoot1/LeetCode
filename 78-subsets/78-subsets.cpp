@@ -1,30 +1,22 @@
 class Solution {
 public:
-    vector<vector<int>>f(vector<int>& nums , int i)
+    void f(int ind , vector<int>ds , vector<vector<int>>&ans,vector<int>&nums)
     {
-        
-        if(i==nums.size())return {{}};
-        
-        
-        vector<vector<int>>smallAns = f(nums,i+1);
-        vector<vector<int>>step;
-        //not include
-        for(auto it : smallAns)
+        if(ind>nums.size())return;
+        if(ind==nums.size())
         {
-            step.push_back(it);
+            ans.push_back(ds);
+            return;
         }
-        //include
-        for(auto it : smallAns)
-        {
-            it.push_back(nums[i]);
-            step.push_back(it);
-        }
-        return step;
-        
-        
-        
+        ds.push_back(nums[ind]);
+        f(ind+1 , ds,ans,nums);
+        ds.pop_back();
+        f(ind+1,ds,ans,nums);
     }
     vector<vector<int>> subsets(vector<int>& nums) {
-        return f(nums,0);
+        vector<int>ds;
+        vector<vector<int>>ans;
+        f(0,ds,ans,nums);
+        return ans;
     }
 };
