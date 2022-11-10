@@ -1,54 +1,32 @@
 class Solution {
 public:
-    bool check(vector<int> &selected, string &currString)
-{
-    vector<int> selfCheck(26, 0); 
-    for (int i = 0; i < currString.size(); i++)
+    bool check(string&str)
     {
-        if (selfCheck[currString[i] - 'a'] == 1)
-            return false ;
-        selfCheck[currString[i] - 'a'] = 1 ;
-    }
-    for (int i = 0; i < currString.size(); i++)
-    {
-        if (selected[currString[i] - 'a'] == 1)
-            return false ;
-    }
-    
-    return true ;
-}
-
-    int help(int i , vector<string>&arr , vector<int>&perfect, int res)
-    {
-        if(i==arr.size())return res;
-        string str = arr[i];
-        if(check(perfect,str)==false)
+        int ch[256]={0};
+        for(auto it : str)
         {
-            return help(i+1,arr,perfect,res);
+            ch[it]++;
+            if(ch[it]>1)return false;
         }
-        else
+        return true;
+    }
+    int maxi = INT_MIN;
+    void f(int ind , string temp , vector<string>&arr)
+    {
+        if(ind==arr.size()){
+            maxi = max((int)temp.size(),maxi);
+            return;
+        }
+        
+        string s = temp+arr[ind];
+        if(check(s))
         {
-            for(int i = 0 ; i < str.size() ; i++)
-            {
-                perfect[str[i]-'a']=1;
-            }
-            res+=str.size();
-            int pick = help(i+1,arr,perfect,res);
-            
-            for(int i = 0 ; i < str.size() ; i++)
-            {
-                perfect[str[i]-'a']=0;
-            }
-            res-=str.size();
-            int nonPick = help(i+1,arr,perfect,res);
-            return max(pick,nonPick);
-            
+            f(ind+1,s,arr);
         }
-        //return -1;
+        f(ind+1,temp,arr);
     }
     int maxLength(vector<string>& arr) {
-        vector<int>perfect(26,0);
-        return help(0,arr,perfect,0);
-        
+        f(0,"",arr);
+        return maxi;
     }
 };
