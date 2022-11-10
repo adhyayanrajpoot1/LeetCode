@@ -1,28 +1,40 @@
 class Solution {
 public:
-    vector<vector<int>>visited;
-    bool find(vector<vector<char>>& board, string &word,int i,int j,int pos)
+    bool dfs(int i , int j , vector<vector<char>>&board , string&word,int &ind)
     {
         int n = board.size();
         int m = board[0].size();
-        if(pos==word.length())return true;
-        if(i>=n || i<0 ||j>=m || j<0 || visited[i][j]==1 || board[i][j]!=word[pos])return false;
+        if(ind==word.size())return true;
+        if(i<0 || i>=n || j<0 || j>=m || board[i][j]=='#' )return false;
         
-        visited[i][j] = 1;
-        bool ans =  find(board,word,i+1,j,pos+1)||find(board,word,i,j+1,pos+1)||find(board,word,i-1,j,pos+1)||find(board,word,i,j-1,pos+1);
-        visited[i][j] = 0;
+        char ch = board[i][j];
+        
+        bool ans = false;
+        if(board[i][j]==word[ind])
+        {
+            board[i][j]='#';
+            ind++;
+            ans = dfs(i+1,j,board,word,ind)||dfs(i,j+1,board,word,ind)||dfs(i-1,j,board,word,ind)||dfs(i,j-1,board,word,ind);
+            ind--;
+            board[i][j] = ch;
+        }
         
         return ans;
     }
+    
     bool exist(vector<vector<char>>& board, string word) {
+        
         int n = board.size();
         int m = board[0].size();
-        visited.resize(n,vector<int>(m,0));
+        int ind=0;
         for(int i = 0 ; i < n ; i++)
         {
             for(int j = 0 ; j < m ; j++)
             {
-                if(find(board,word,i,j,0))return true;
+                if(board[i][j]==word[0])
+                {
+                    if(dfs(i,j,board,word,ind))return true;
+                }
             }
         }
         return false;
