@@ -1,31 +1,27 @@
 class Solution {
 public:
-    void f(vector<int>& nums , vector<vector<int>>&ans , int pos)
+    void f(int ind , vector<int>&nums , set<vector<int>>&s)
     {
-        if(pos==nums.size())
+        if(ind==nums.size())
         {
-            ans.push_back(nums);
+            s.insert(nums);
             return;
         }
-        
-        unordered_set<int>s;
-        for(int i = pos ; i < nums.size() ; i++)
+        for(int i = ind ; i< nums.size() ; i++)
         {
-            if(s.find(nums[i])==s.end())
-            {
-                s.insert(nums[i]);
-                swap(nums[i],nums[pos]);
-                f(nums,ans,pos+1);
-                swap(nums[i],nums[pos]);
-            }
+            swap(nums[i],nums[ind]);
+            f(ind+1,nums,s);
+            swap(nums[i],nums[ind]);
         }
     }
-    
     vector<vector<int>> permuteUnique(vector<int>& nums) {
-        int n = nums.size();
+        set<vector<int>>s;
+        f(0,nums,s);
         vector<vector<int>>ans;
-        f(nums,ans,0);
+        for(auto it : s)
+        {
+            ans.push_back(it);
+        }
         return ans;
-        
     }
 };
