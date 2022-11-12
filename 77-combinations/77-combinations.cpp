@@ -1,25 +1,30 @@
 class Solution {
 public:
-    void f(int n, int k , int i , vector<int>&subset,vector<vector<int>>&ans)
+    
+    void f(int ind , int n , int k , vector<int>ds , vector<vector<int>>&ans)
     {
-        
-        if(k==0){
-            ans.push_back(subset);
+        if(k==0)
+        {
+            ans.push_back(ds);
             return;
         }
-        if(i>n)return ;
-        if(k>n-i+1)return;
-        //pick 
-        subset.push_back(i);
-        f(n,k-1,i+1,subset,ans);
-        subset.pop_back();
-        f(n,k,i+1,subset,ans);
+        if(ind>n)return;
+        
+        for(int i = ind ; i <= n ; i++)
+        {
+            ds.push_back(i);
+            f(i+1,n,k-1,ds,ans);
+            ds.pop_back();
+            //f(i+1,n,k,ds,ans);
+        }
+        
         
     }
+    
+    
     vector<vector<int>> combine(int n, int k) {
-        vector<int>subset;
         vector<vector<int>>ans;
-        f(n,k,1,subset,ans);
+        f(1,n,k,{},ans);
         return ans;
     }
 };
