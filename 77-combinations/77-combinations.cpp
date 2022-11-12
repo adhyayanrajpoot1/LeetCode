@@ -1,7 +1,7 @@
 class Solution {
 public:
     
-    void f(int ind , int n , int k , vector<int>ds , vector<vector<int>>&ans)
+    void f(int ind , int n , int k , vector<int>&ds , vector<vector<int>>&ans)
     {
         if(k==0)
         {
@@ -24,7 +24,8 @@ public:
     
     vector<vector<int>> combine(int n, int k) {
         vector<vector<int>>ans;
-        f(1,n,k,{},ans);
+        vector<int>temp;
+        f(1,n,k,temp,ans);
         return ans;
     }
 };
