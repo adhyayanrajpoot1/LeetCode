@@ -5,24 +5,17 @@ public:
         return a[1]<b[1];
     }
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-        sort(intervals.begin() , intervals.end() , cmp);
-        if(intervals.size()==1)return 0;
-        int prevA = intervals[0][0];
-        int prevB = intervals[0][1];
-        int c=0;
-        for(int i = 1 ; i < intervals.size() ; i++)
-        {
-            int a = intervals[i][0];
-            int b = intervals[i][1];
-            if(prevB>a)
-            {
-                c++;
-                continue;
+        sort(intervals.begin(), intervals.end(), cmp);
+        int count = 1;
+        int end = intervals[0][1];
+        for(int i=1;i<intervals.size();i++){
+            if(intervals[i][0]>=end){
+                end=intervals[i][1];
+                count++;
             }
-            prevA = a;
-            prevB = b;
         }
-        return c;
+        return intervals.size()-count;        
+    
         
     }
 };
