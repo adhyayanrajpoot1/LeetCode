@@ -1,40 +1,27 @@
 class Solution {
 public:
-    
-    void f(int ind , int t , vector<int>& can, vector<vector<int>>&ans,vector<int>&v)
+    vector<vector<int>>ans;
+    void f(int ind , int sum , int tar , vector<int>&ds , vector<int>&nums)
     {
-        //base case
-        if(ind==can.size())
+        if(tar<sum)return;
+        if(sum==tar)
         {
-            if(t==0){
-            ans.push_back(v);}
+            ans.push_back(ds);
             return;
         }
-        if(ind>=can.size())return;
-        
-        
-        
-        //pick 
-        if(can[ind]<=t)
-        {
-            v.push_back(can[ind]);
-            
-            
-            f(ind+1,t-can[ind],can,ans,v);
-            v.pop_back();
-            
-        }
-        while(ind+1<can.size() && can[ind]==can[ind+1])ind++;
-        f(ind+1,t,can,ans,v);
-        
-        
+        if(ind==nums.size())return;
+        ds.push_back(nums[ind]);
+        sum+=nums[ind];
+        f(ind+1,sum,tar,ds,nums);
+        ds.pop_back();
+        sum-=nums[ind];
+        while( ind+1<nums.size() && nums[ind]==nums[ind+1])ind++;
+        f(ind+1,sum,tar,ds,nums);
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<vector<int>>ans;
-        vector<int>v;
-        int n = candidates.size();
+        vector<int>temp;
         sort(candidates.begin(),candidates.end());
-        f(0,target,candidates,ans,v);
+        f(0,0,target,temp,candidates);
         return ans;
     }
 };
