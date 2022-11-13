@@ -1,34 +1,31 @@
 class Solution {
 public:
-    vector<int>v;
-    void f(int ind , int target , vector<int>&can,vector<vector<int>>&ans)
+    vector<vector<int>>ans;
+    void f(int ind , int sum ,int tar, vector<int>&ds , vector<int>&nums)
     {
-        
-        // if(ind==can.size())
-        // {
-        //     if(target==0){
-        //         ans.push_back(v);
-        //     }
-        //     return;
-        // }
-        if(target==0){
-            ans.push_back(v);
+        if(sum==tar)
+        {
+            ans.push_back(ds);
             return;
         }
-        //if(target<0)return;
-        if(ind>=can.size())return;
-        if(can[ind]<=target)
-        {
-            v.push_back(can[ind]);
-            f(ind,target-can[ind],can,ans);
-            v.pop_back();
-        }
-        f(ind+1,target,can,ans);
+        if(ind==nums.size())return;
         
+       if(nums[ind]+sum<=tar)
+       {
+            ds.push_back(nums[ind]);
+            sum+=nums[ind];
+            f(ind,sum,tar,ds,nums);
+            ds.pop_back();
+            sum-=nums[ind];
+       }
+        f(ind+1,sum,tar,ds,nums);
+        
+            
     }
-    vector<vector<int>> combinationSum(vector<int>& c, int target) {
-        vector<vector<int>>ans;
-        f(0,target,c,ans);
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        //vector<vector<int>>ans;
+        vector<int>temp;
+        f(0,0,target,temp,candidates);
         return ans;
     }
 };
