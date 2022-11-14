@@ -10,7 +10,7 @@ public:
         
     }
     int climbStairs(int n) {
-        vector<int>dp(n+1,-1);
+        vector<int>dp(n,-1);
         return f(0,n,dp);
     }
 };
