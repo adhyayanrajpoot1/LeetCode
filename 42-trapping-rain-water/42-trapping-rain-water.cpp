@@ -2,27 +2,27 @@ class Solution {
 public:
     int trap(vector<int>& height) {
         int n = height.size();
-        
-        int arrL[n];
-        int arrR[n];
-        if(n==0 || n==1)return 0;
-        arrL[0]=height[0];
-        for(int i = 1; i < n ; i++)
+        vector<int>lmax(n,0) , rmax(n,0);
+        lmax[0] = height[0];
+        rmax[n-1] = height[n-1];
+        for(int i = 1 ; i < n ; i++)
         {
-            arrL[i]=max(arrL[i-1],height[i]);
+            lmax[i] = max(height[i] ,lmax[i-1]);
         }
-        arrR[n-1]=height[n-1];
         for(int i = n-2 ; i>=0 ; i--)
         {
-            arrR[i] = max(arrR[i+1],height[i]);
+            rmax[i] = max(height[i] , rmax[i+1]);
+            
         }
-        int area[n];
-        int sum = 0;
+        //for(auto it : rmax)cout<<it <<" ";
+        //cout<<endl;
+        int ans =0 ;
         for(int i = 0 ; i < n ; i++)
         {
-            area[i] = min(arrL[i],arrR[i])-height[i];
-            sum+=area[i];
+            int h = min(lmax[i],rmax[i]);
+            ans += abs(h-height[i]);
+            //cout <<ans <<" ";
         }
-        return sum;
+        return ans;
     }
 };
