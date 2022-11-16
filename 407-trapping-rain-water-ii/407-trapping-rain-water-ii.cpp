@@ -4,7 +4,7 @@ public:
         int n = heightMap.size();
         int m = heightMap[0].size();
         vector<vector<int>>vis(n,vector<int>(m,0));
-         priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>>pq;
+        priority_queue<pair<int,pair<int,int>> , vector<pair<int,pair<int,int>>> , greater<pair<int,pair<int,int>>>>pq;
         for(int i = 0 ; i < n ; i++)
         {
             vis[i][0] = vis[i][m-1] = 1;
@@ -31,12 +31,17 @@ public:
             {
                 int x = i+dr[k];
                 int y = j+dr[k+1];
-                if(x>=0 && y>=0 && x<n && y<m && vis[x][y]==0)
+                if(x>=0 && y>=0 && x<n && y<m && !vis[x][y])
                 {
-                    ans+=max(0,h-heightMap[x][y]);
-                    pq.push({max(h,heightMap[x][y]) , {x,y}});
+                    if(heightMap[i][j]> heightMap[x][y])
+                    {
+                        int diff = heightMap[i][j]-heightMap[x][y];
+                        ans+=diff;
+                        heightMap[x][y]  = heightMap[i][j];
+                    }
+                    // else if(heightMap[i][j] < heightMap[x][y])
+                    pq.push({heightMap[x][y] , {x,y}});
                     vis[x][y]=1;
-                    
                 }
             }
             
