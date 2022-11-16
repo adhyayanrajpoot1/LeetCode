@@ -1,57 +1,40 @@
 class Solution {
 public:
-    typedef pair<int, pair<int, int>> block;
+    
 int trapRainWater(vector<vector<int>> &height)
 {
 
-    /*
-    we know that overflow must happen by crossing the boundary values, so we will store all the boundary values
-    we will process the element with minimum height, if water can't flow from minimum, it isn't possible through other elements
-
-    we will also mark a visited array, we won't process the values which are in the visited array
-
-    now we will use that minimum value with us, we will check for the neighbour of the value, if neighbours are on the boundary,
-    then we don't process them. now we have three condition here
-
-    1. neighbour[i][j]<min[i][j]-> in this condition we can store the value, we can add the value of
-    min[i][j]-neighbour[i][j] to our answer, we also know that now, we need to process the other values on that side too,
-    so, we will change the value of neighbour to that min[i][j] value
-
-    2.. neighbour=min[i][j]-> then we can't anything to our answer because water will flow over us here, so we here too move our
-    value to the neighbour and do same for neighbour's neighbour.
-
-    3. neighbour>min[i][j]-> then water is blocked by the neighbour itself, we will delegate to the neighbour to check blockage by it
-    */
-
-    priority_queue<block, vector<block>, greater<block>> mn;
-    int m = height.size();
-    int n = height[0].size();
-    bool vis[m][n];
-    memset(vis, false, sizeof(vis));
-    for (int i = 0; i < m; i++)
-    {
-        for (int j = 0; j < n; j++)
+    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> mn;
+    int n = height.size();
+    int m = height[0].size();
+    //bool vis[m][n];
+    //memset(vis, false, sizeof(vis));
+       vector<vector<int>>vis(n,vector<int>(m,0));
+            for(int i = 0 ; i < n ; i++)
         {
-            if (i == 0 || j == 0 || i == m - 1 || j == n - 1)
-            {
-                mn.push({height[i][j], {i, j}});
-                vis[i][j] = true;
-            }
+            vis[i][0] = vis[i][m-1] = 1;
+            mn.push({height[i][0] , {i,0}});
+            mn.push({height[i][m-1] , {i,m-1}});
         }
-    }
-    vector<vector<int>> dir = {{0, -1}, {0, 1}, {1, 0}, {-1, 0}};
+        for(int i = 0 ; i < m ; i++)
+        {
+            vis[0][i] = vis[n-1][i] = 1;
+            mn.push({height[0][i] , {0,i}});
+            mn.push({height[n-1][i] , {n-1,i}});
+        }
+    int dr[] = {-1,0,1,0,-1};
     int water = 0;
 
     while (mn.size() > 0)
     {
-        block p = mn.top();
+        pair<int, pair<int, int>> p = mn.top();
         mn.pop();
-        for (int i = 0; i < dir.size(); i++)
+        for (int i = 0; i < 4; i++)
         {
-            int rowdash = p.second.first + dir[i][0];
-            int coldash = p.second.second + dir[i][1];
+            int rowdash = p.second.first + dr[i];
+            int coldash = p.second.second + dr[i+1];
 
-            if (rowdash >= 0 && rowdash < m && coldash >= 0 && coldash < n && vis[rowdash][coldash] == false)
+            if (rowdash >= 0 && rowdash < n && coldash >= 0 && coldash < m && vis[rowdash][coldash] == false)
             {
                 water += max(0, p.first - height[rowdash][coldash]);
 
