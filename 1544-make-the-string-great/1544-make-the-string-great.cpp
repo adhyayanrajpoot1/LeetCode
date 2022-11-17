@@ -1,18 +1,21 @@
 class Solution {
 public:
-    string makeGood(string s) {  
-        // If the string is emtpy, just return it.
-        if (s.empty()) 
-            return s;
-        
-        // If we find a pair in 's', remove this pair from 's'
-        // and solve the remaining string recursively.
-        for (int i = 0; i < s.size() - 1; ++i) {
-            if (abs(s[i] - s[i + 1]) == 32)
-                return  makeGood(s.substr(0, i) + s.substr(i + 2));
+    string makeGood(string s) {
+        // Initialize 'end = 0' since the good string is empty.
+        int end = 0;
+        for (int cur = 0; cur < s.size(); ++cur) {
+            // If s[cur] makes a pair with the last character s[end - 1] in good string,
+            // remove s[end - 1] by decrementing 'end' by 1. 
+            // Otherwise, add s[cur] to the good string by overwritting s[end] by s[cur].
+            if (end > 0 && abs(s[cur] - s[end - 1]) == 32)
+                end--;
+            else {
+                s[end] = s[cur];
+                end++;
+            }
         }
-
-        // Base case, if we can't find a pair, just return 's'.
-        return s;
+        
+        // Once the iteration ends, the string before 'end' is the good string.
+        return s.substr(0, end);  
     }
 };
