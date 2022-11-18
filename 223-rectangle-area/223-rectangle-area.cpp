@@ -1,10 +1,22 @@
 class Solution {
 public:
-    int computeArea(int A, int B, int C, int D, int E, int F, int G, int H) {
-    int s1 = (C - A) * (D - B);
-    int s2 = (G - E) * (H - F); 
-    if (A >= G || C <= E || D <= F || B >= H)
-        return s1 + s2; 
-    return s1 - (min(G, C) - max(A, E)) * (min(D, H) - max(B, F)) + s2;
-}
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int a1 = (ax2-ax1)*(ay2-ay1);
+        int a2 = (bx2-bx1)*(by2-by1);
+        
+        int cx1 = max(ax1,bx1);
+        int cx2 = min(ax2,bx2);
+        int cy1 = min(ay2,by2);
+        int cy2 = max(ay1,by1);
+        
+        
+        int xo = cx2-cx1;
+        int yo = cy1-cy2;
+        int ao = 0;
+        if(xo>0 && yo>0)
+        {
+            ao = xo*yo;
+        }
+        return (a1+a2-ao);
+    }
 };
