@@ -2,7 +2,7 @@ class Solution {
 public:
     int secondMinimum(int n, vector<vector<int>>& edges, int time, int change) {
         vector<int>adj[n+1];
-        for(auto it : edges)
+        for(auto &it : edges)
         {
             int i = it[0];
             int j = it[1];
@@ -31,7 +31,7 @@ public:
             {
                 signal = signal+time;
             }
-            for(auto it : adj[ele])
+            for(auto &it : adj[ele])
             {
                 if(mini[it]==-1)
                 {
