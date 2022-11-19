@@ -1,40 +1,34 @@
 class Solution {
 public:
-    vector<vector<int>> merge(vector<vector<int>>& nums) {
-        sort(nums.begin(),nums.end());
+    vector<vector<int>> merge(vector<vector<int>>& intervals) {
+        sort(intervals.begin() , intervals.end());
+        int pf = intervals[0][0];
+        int ps = intervals[0][1];
         vector<vector<int>>ans;
-        int n = nums.size();
-        for(int i = 0 ; i < n ; i++)
+        for(int i = 0 ; i < intervals.size() ; i++)
         {
-            int s1= nums[i][0];
-            int e1 = nums[i][1];
-            int count=0;
-            for(int j = i; j < n ; j++)
+            if(intervals[i][0]<=ps)
             {
-                  //fully oveerlap
-                if(i==j)continue;
-                if(nums[j][1]<=e1 && nums[j][0]>=s1)
-                {
-                    e1=e1;
-                    count++;
-                }
-                //partial overlap
-                else if(nums[j][0]<=e1){
-                    e1= nums[j][1];
-                    count++;
-                }
-//                 else{
-                    
-//                     break;
-//                 }    
-                //no overlap
+                ps = max(intervals[i][1] , ps);
             }
-            
-            cout<<i<<" " <<count<<" "<<endl;
-            i+=count;
-            ans.push_back({s1,e1});
+            else
+            {
+                vector<int>temp;
+                temp.push_back(pf);
+                temp.push_back(ps);
+                ans.push_back(temp);
+                pf = intervals[i][0];
+                ps = intervals[i][1];
+            }
         }
+        vector<int>temp;
+        temp.push_back(pf);
+        temp.push_back(ps);
+        ans.push_back(temp);
+       
+        
         return ans;
+        
         
     }
 };
