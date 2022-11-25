@@ -1,42 +1,42 @@
 class Solution {
 public:
-    int MOD = 1e9+7;
     int sumSubarrayMins(vector<int>& arr) {
-        
         int n = arr.size();
-        
-        vector<int> left(n,-1), right(n,n);
-        // for every i find the Next smaller element to left and right
-        
-        // Left
-        stack<int> st;
-        for(int i=0; i<n; i++)
+        vector<int>sl(n) , sr(n);
+        stack<int>s1,s2;
+        for(int i = 0 ; i < n ; i++)
         {
-            while(st.size() && arr[i] < arr[st.top()]) st.pop();
-            if(st.size()) left[i] = i - st.top();
-            else left[i] = i+1;
-            st.push(i);
+            sl[i] = i;
+            sr[i] = n-i-1;
         }
-        
-        while(st.size()) st.pop();
-        
-        // Right
-        for(int i=n-1; i>=0; i--)
+        for(int i = 0 ; i < n ; i++)
         {
-            while(st.size() && arr[i] <= arr[st.top()]) st.pop();
-            if(st.size()) right[i] = st.top() - i;
-            else right[i] = n - i;
-            st.push(i);
+            while(!s1.empty() && arr[s1.top()]>arr[i])
+            {
+                sr[s1.top()] = i-s1.top()-1;
+                s1.pop();
+            }
+            s1.push(i);
         }
-        
-        int res = 0;
-        for(int i=0; i<n; i++)
+        for(int i = n-1 ; i>= 0 ; i--)
         {
-            long long prod = (left[i]*right[i])%MOD;
-            prod = (prod*arr[i])%MOD;
-            res = (res + prod)%MOD;
+            while(!s2.empty() && arr[s2.top()]>=arr[i])
+            {
+                sl[s2.top()] = s2.top()-i-1;
+                s2.pop();
+            }
+            s2.push(i);
         }
+        int mod = 1e9+7;
+        long long ans= 0 ;
+        for(int i = 0 ; i < n ; i++)
+        {
+            long long a = (sl[i]+1)%mod;
+            long long b = (sr[i]+1)%mod;
+            ans+=(arr[i]*(a)*(b));
+            ans%=mod;
+        }
+        return ans;
         
-        return res%MOD;
     }
 };
